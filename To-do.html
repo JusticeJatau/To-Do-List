@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>To-Do</h2>
+        <div class="field">
+            <input type="text" class="input" id="input">
+            <button class="btn" id="btn" onclick="Add()">Add</button>
+        </div>
+        <div class="list-body" id="list-body">
+
+        </div>
+    </div>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+        body{
+            background: linear-gradient(135deg, #4314bb,#a30743);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container{
+            width: 400px;
+            height: 500px;
+            background: #eeeded;
+            display: flex;
+            flex-direction: column;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        .container h2{
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .field{
+            width: 100%;
+            display: flex;
+            gap: 2px;
+        }
+        .input{
+            width: 100%;
+            height: 30px;
+            border-radius: 5px;
+            padding: 0 10px;
+        }
+        .btn{
+            height: 30px;
+            width: 40px;
+            border-radius: 0 10px 0 10px;
+            background: #078ca3;
+        }
+        .list-body{
+            border: 2px solid #307e9c;
+            margin-top: 10px;
+            height: 100%;
+            border-radius:0 0 20px 20px;
+            padding: 10px 5px;
+            overflow: auto;
+        }
+        #list-holder{
+            border-radius: 5px;
+            border: 1px solid #000;
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            padding: 0 0 0 2px;
+            list-style:circle;
+            overflow: hidden;
+        }
+        #close{
+            background: #078ca3;
+            border: none;
+            height: 100%;
+            width: 40px;
+            border-radius: 0 0 0 20px;
+        }
+        #list{
+            font-weight:bold;
+        }
+    </style>
+
+    <script>
+        let btn = document.getElementById("btn")
+        let input = document.getElementById("input")
+        let container = document.getElementById("list-body")
+
+        function updateStorage(){
+            localStorage.setItem("data",container.innerHTML);
+        }
+        function loadStorage(){
+            container.innerHTML = localStorage.getItem("data");
+        }
+        loadStorage();
+
+        container.addEventListener("click", function(e){
+            if(e.target.tagName === "BUTTON"){
+                e.target.parentElement.remove();
+            }
+            if(e.target.tagName === "LI"){
+                if(e.target.style.textDecoration === "line-through"){
+                    e.target.style.textDecoration = "none";
+                    e.target.style.opacity = "1";
+                }else{
+                    e.target.style.textDecoration = "line-through";
+                    e.target.style.opacity = ".5";
+                }
+            }
+            updateStorage();
+        
+        })
+
+        function Add(){
+            if(input.value === ""){
+                alert("You must input something!.");
+            }else{
+                let li = document.createElement("li")
+                let div = document.createElement("div")
+                let close = document.createElement("button")
+                div.id = "list-holder"
+                li.id = "list"
+                close.id = "close"
+                li.innerHTML = input.value
+                close.innerHTML = "X"
+                container.appendChild(div).appendChild(li)
+                div.appendChild(close)
+
+            }
+            updateStorage();
+            input.value = ""
+        }
+    </script>
+</body>
+</html>
